@@ -270,6 +270,9 @@ input:disabled{opacity:0.55;cursor:not-allowed;background:var(--sf2)!important;}
 
 /* ── Origen de slot en bracket (1°A, 2°B, etc) ────────────── */
 .br-origin{font-size:7px;font-weight:700;color:var(--mu);font-family:'Space Mono',monospace;background:var(--sf3);padding:1px 4px;border-radius:3px;margin-left:3px;letter-spacing:.5px;white-space:nowrap;}
+
+/* ── Ganador proyectado en bracket (distinto de real) ─────── */
+.br-team-row.bproj-win{background:linear-gradient(90deg,rgba(155,89,255,.12),transparent);border-left:2px dashed var(--acc2);}
 </style>
 </head>
 <body>
@@ -830,6 +833,12 @@ function teamFor(m,side){
   if(r&&r.played){
     return side==='H'?(r.teamH||KLEM[m.id]||'?'):(r.teamA||'?');
   }
+  // Proyección 4C: usar el equipo proyectado para esta casilla
+  const proj = PROJ_BRACKET[m.id];
+  if(proj){
+    const pt = side==='H'?proj.h:proj.a;
+    if(pt) return pt;
+  }
   if(side==='H'){
     if(m.slotH)  return resolveSlot(m.slotH,m.id);
     if(m.winOf)  return resolveWinner(m.winOf.a)||(KLEM[m.id]||'W('+m.winOf.a+')');
@@ -1330,10 +1339,12 @@ function slotOrigin(slot){
   return '';
 }
 
+let PROJ_BRACKET = {}; // proyección del torneo (marcadores + ganadores)
 function renderBracket(){
   const root=document.getElementById('bracketRoot');if(!root)return;
   root.innerHTML='';
   const QUAL = getQualifiedTeams(); // equipos ya clasificados matemáticamente
+  PROJ_BRACKET = projectTournament(); // proyección 4C para llenar casillas por confirmar
   const r16=KO_ROUNDS.find(r=>r.id==='r16').matches;
   const r8=KO_ROUNDS.find(r=>r.id==='r8').matches;
   const qf=KO_ROUNDS.find(r=>r.id==='qf').matches;
@@ -1376,8 +1387,16 @@ function renderBracket(){
     let winH=false,winA=false;
     if(played){if(hs>as_)winH=true;else if(as_>hs)winA=true;else if(r&&r.pen==='H')winH=true;else if(r&&r.pen==='A')winA=true;}
     const isPen=!!(played&&r&&r.pen);
-    const hCls=played?(winH?'bwinner':'bloser'):'';
-    const aCls=played?(winA?'bwinner':'bloser'):'';
+    // Proyección 4C para casillas por confirmar
+    const proj = PROJ_BRACKET[m.id];
+    let projWinH=false, projWinA=false, projScoreH='', projScoreA='', projPen=false;
+    if(!played && proj && proj.pred){
+      projScoreH = proj.pred.predH; projScoreA = proj.pred.predA;
+      projPen = proj.pred.pen;
+      if(proj.winner===proj.h) projWinH=true; else if(proj.winner===proj.a) projWinA=true;
+    }
+    const hCls=played?(winH?'bwinner':'bloser'):(projWinH?'bproj-win':'');
+    const aCls=played?(winA?'bwinner':'bloser'):(projWinA?'bproj-win':'');
     // Clase y badge de clasificación matemática
     function qualInfo(teamName){
       const q = QUAL[teamName];
@@ -1392,8 +1411,8 @@ function renderBracket(){
     // Penalty badges — 🥅 on winner name, "PEN" under score
     const penH=winH&&isPen?`<span class="bpen-b">🥅PEN</span>`:'';
     const penA=winA&&isPen?`<span class="bpen-b">🥅PEN</span>`:'';
-    const scoreH=played?hs:'';
-    const scoreA=played?as_:'';
+    const scoreH=played?hs:(projScoreH!==''?projScoreH:'');
+    const scoreA=played?as_:(projScoreA!==''?projScoreA:'');
     // Extra meta line for penalties
     const penMeta=isPen?`<div style="font-size:7px;text-align:center;color:var(--ora);font-family:'Space Mono',monospace;padding:1px 6px;background:rgba(255,165,2,.08)">🥅 Definido por penaltis</div>`:'';
     // Etiqueta de origen (1°A, 2°B, mejor 3°) — solo en 16avos
@@ -1401,7 +1420,11 @@ function renderBracket(){
     const oA = m.slotA ? slotOrigin(m.slotA) : '';
     const obH = oH ? `<span class="br-origin">${oH}</span>` : '';
     const obA = oA ? `<span class="br-origin">${oA}</span>` : '';
-    return `<div class="br-team-row ${hCls} ${qH.cls}"><span class="br-tfl">${fH}</span><span class="br-tnm">${nH}${qH.badge}${!played&&KLEM[m.id]===tH?kB:''}${penH}</span>${obH}<span class="br-tsc" style="${winH?'color:var(--grn)':''}">${scoreH}</span></div><div class="br-team-row ${aCls} ${qA.cls}"><span class="br-tfl">${fA}</span><span class="br-tnm">${nA}${qA.badge}${!played&&KLEM[m.id]===tA?kB:''}${penA}</span>${obA}<span class="br-tsc" style="${winA?'color:var(--grn)':''}">${scoreA}</span></div>${penMeta}<div class="br-kmeta">${m.fecha}</div>`;
+    // Color del marcador: verde si real ganador, morado si proyectado ganador
+    const scH_color = winH?'color:var(--grn)':(projWinH?'color:var(--acc2)':'');
+    const scA_color = winA?'color:var(--grn)':(projWinA?'color:var(--acc2)':'');
+    const projTag = (!played && proj && proj.pred) ? `<div style="font-size:6px;text-align:center;color:var(--acc2);font-family:'Space Mono',monospace;letter-spacing:1px;padding:1px">🎯 PROYECCIÓN 4C${projPen?' · PEN':''}</div>` : '';
+    return `<div class="br-team-row ${hCls} ${qH.cls}"><span class="br-tfl">${fH}</span><span class="br-tnm">${nH}${qH.badge}${!played&&KLEM[m.id]===tH?kB:''}${penH}</span>${obH}<span class="br-tsc" style="${scH_color}">${scoreH}</span></div><div class="br-team-row ${aCls} ${qA.cls}"><span class="br-tfl">${fA}</span><span class="br-tnm">${nA}${qA.badge}${!played&&KLEM[m.id]===tA?kB:''}${penA}</span>${obA}<span class="br-tsc" style="${scA_color}">${scoreA}</span></div>${penMeta}${projTag}<div class="br-kmeta">${m.fecha}</div>`;
   }
   const wrap=document.createElement('div');
   wrap.className='bracket-svg-wrap';wrap.style.cssText=`width:${TOTAL_W}px;height:${CANVAS_H}px;`;
