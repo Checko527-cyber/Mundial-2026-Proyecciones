@@ -1,17 +1,7 @@
 {
-  "version": 2,
-  "functions": {
-    "api/scores.js": {
-      "maxDuration": 10
-    }
-  },
-  "headers": [
-    {
-      "source": "/api/scores",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=180, s-maxage=180" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
-    }
-  ]
+  "name": "mundial2026-fixture",
+  "version": "1.0.0",
+  "description": "Fixture interactivo Mundial 2026 con predicciones modelo 4 capas",
+  "type": "module",
+  "private": true
 }

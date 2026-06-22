@@ -1,111 +1,144 @@
-# 🚀 Guía de publicación en Vercel — Mundial 2026
+# 🔄 Guía: Conectar GitHub + Vercel para actualizaciones automáticas
 
-Esta guía te lleva paso a paso para publicar tu fixture en Vercel (gratis, 1 millón de invocaciones/mes).
+Esta guía te configura UNA SOLA VEZ para que después actualizar tu fixture
+sea cuestión de segundos, conservando siempre la misma URL.
 
----
-
-## PARTE 1 — Crear cuenta en Vercel
-
-1. Entra a **https://vercel.com**
-2. Haz clic en **"Sign Up"** (arriba a la derecha)
-3. Elige registrarte con **GitHub**, **GitLab** o **email**
-   - Lo más fácil: usar tu cuenta de **GitHub** (si no tienes, créala gratis en github.com)
-4. Acepta los permisos y confirma tu correo
+**Tiempo de configuración inicial:** ~15 minutos
+**Tiempo de cada actualización futura:** ~1 minuto
 
 ---
 
-## PARTE 2 — Subir el proyecto (opción fácil: drag & drop)
+# PARTE A — CONFIGURACIÓN INICIAL (solo una vez)
 
-Vercel permite arrastrar la carpeta directamente, igual que Netlify.
+## Paso 1 — Crear cuenta en GitHub
 
-1. Una vez dentro de tu panel de Vercel, busca el botón **"Add New..."** → **"Project"**
-2. Si te pide conectar un repositorio de GitHub, busca abajo la opción **"Deploy"** o el enlace pequeño que dice **"Import Third-Party Git Repository"** — pero NO la necesitas
-3. **MÉTODO MÁS SIMPLE — Vercel CLI o drag & drop:**
+1. Entra a **https://github.com**
+2. Clic en **"Sign up"** (registrarse)
+3. Usa el mismo correo que usas para Vercel (facilita la conexión después)
+4. Elige un nombre de usuario y contraseña
+5. Verifica tu correo
 
-### Opción A: Arrastrar (más simple)
-   - Descomprime el archivo `mundial2026-vercel.zip` en tu computador
-   - Ve a **https://vercel.com/new**
-   - Arrastra la **carpeta completa** `mundial2026-vercel` a la zona de carga
-   - Vercel detecta automáticamente la configuración
-
-### Opción B: Con GitHub (recomendado para actualizaciones futuras)
-   - Sube la carpeta a un repositorio nuevo de GitHub
-   - En Vercel: "Add New" → "Project" → selecciona el repositorio
-   - Clic en **"Deploy"**
-
-4. Espera 1-2 minutos mientras Vercel construye el sitio
-5. ¡Listo! Te dará una URL como `https://mundial2026-tunombre.vercel.app`
+> Si ya tienes cuenta de GitHub, salta este paso.
 
 ---
 
-## PARTE 3 — (Opcional) Activar partidos EN VIVO
+## Paso 2 — Crear un repositorio nuevo
 
-El botón LIVE funciona sin configuración para resultados finales (vía openfootball).
-Para ver partidos **en curso minuto a minuto**, necesitas una API key gratis de API-Football:
+Un "repositorio" es como una carpeta en la nube donde vive tu proyecto.
 
-1. Entra a **https://www.api-football.com/**
-2. Crea una cuenta gratis (plan "Free": 100 requests/día)
-3. Copia tu **API Key** del dashboard
-4. En Vercel, ve a tu proyecto → **Settings** → **Environment Variables**
-5. Agrega una variable:
-   - **Name:** `API_FOOTBALL_KEY`
-   - **Value:** (pega tu API key)
-   - **Environment:** marca las tres (Production, Preview, Development)
-6. Clic en **"Save"**
-7. Ve a **Deployments** → en el último deploy haz clic en los tres puntos → **"Redeploy"**
-
-> Sin esta key, el botón LIVE igual funciona para resultados de partidos terminados.
+1. Una vez dentro de GitHub, clic en el botón verde **"New"** (o el "+" arriba a la derecha → "New repository")
+2. En **"Repository name"** escribe: `mundial2026`
+3. Déjalo como **"Public"** (público) — es gratis
+4. **NO marques** ninguna casilla de "Add README", "Add .gitignore" ni "license"
+5. Clic en **"Create repository"**
 
 ---
 
-## PARTE 4 — Actualizar el sitio en el futuro
+## Paso 3 — Subir tus archivos a GitHub
 
-### Si usaste drag & drop:
-- Ve a **https://vercel.com/new** y arrastra la carpeta actualizada de nuevo
+Ahora verás una página con instrucciones. Ignóralas y usa el método visual:
 
-### Si usaste GitHub:
-- Solo haz `git push` y Vercel redespliega automáticamente
+1. En la página del repositorio, busca el enlace que dice **"uploading an existing file"**
+   (está en el texto: "...or push an existing repository... or **uploading an existing file**")
+   - Si no lo ves, ve directo a: `https://github.com/TU-USUARIO/mundial2026/upload/main`
 
----
+2. **Descomprime** el `mundial2026-vercel.zip` en tu computador
 
-## ⚡ Consumo y límites (plan gratis Hobby)
+3. **Arrastra TODOS los archivos** de la carpeta descomprimida a la zona de carga de GitHub:
+   - `index.html`
+   - `package.json`
+   - `vercel.json`
+   - la carpeta `api` (con `scores.js` dentro)
 
-| Recurso | Límite gratis | Tu uso estimado |
-|---|---|---|
-| Invocaciones de función | 1,000,000/mes | Muy por debajo |
-| Ancho de banda | 100 GB/mes | Mínimo |
-| Builds | 6,000 min/mes | Insignificante |
+   > IMPORTANTE: arrastra el CONTENIDO de la carpeta, no la carpeta `mundial2026-vercel` en sí.
+   > Es decir, abre la carpeta y selecciona los archivos que están adentro.
 
-**Optimizaciones ya incluidas en tu fixture:**
-- ✅ Auto-refresh eliminado (solo actualiza al presionar LIVE)
-- ✅ Caché de 3 minutos en el navegador (evita llamadas repetidas)
-- ✅ Cache headers en `vercel.json` (respuestas compartidas entre visitantes)
+4. Espera a que suban (verás los nombres aparecer)
 
-Con esto es prácticamente imposible que agotes el plan gratis de Vercel.
+5. Abajo, en **"Commit changes"**, deja el mensaje por defecto y clic en **"Commit changes"**
 
 ---
 
-## ❓ Problemas comunes
+## Paso 4 — Conectar Vercel con GitHub
 
-**"El botón LIVE no marca partidos en vivo"**
-→ Necesitas configurar `API_FOOTBALL_KEY` (Parte 3). Sin ella solo funcionan resultados finales.
+1. Entra a **https://vercel.com** e inicia sesión
+2. Clic en **"Add New..."** → **"Project"**
+3. Vercel te mostrará tus repositorios de GitHub
+   - Si es la primera vez, te pedirá autorizar la conexión con GitHub → acepta
+   - Puede pedirte instalar "Vercel" en tu cuenta de GitHub → dale "Install"
+4. Busca **`mundial2026`** en la lista y clic en **"Import"**
+5. En la pantalla de configuración, **NO cambies nada** (Vercel detecta todo solo)
+6. Clic en **"Deploy"**
+7. Espera 1-2 minutos → ¡listo! Tendrás tu URL `.vercel.app`
 
-**"Error 404 en /api/scores"**
-→ Verifica que la carpeta `api/` con `scores.js` esté en la raíz del proyecto.
-
-**"El sitio no actualiza resultados"**
-→ Espera 3 minutos (caché) o borra el caché del navegador. Los resultados vienen de openfootball que se actualiza periódicamente.
+> Esta vez SÍ es la URL definitiva que se mantendrá para siempre.
 
 ---
 
-## 📁 Estructura del proyecto
+## Paso 5 — (Opcional) Configurar la API key para partidos en vivo
+
+Si quieres ver partidos en curso minuto a minuto:
+
+1. Crea cuenta gratis en **https://www.api-football.com/**
+2. Copia tu **API Key**
+3. En Vercel: tu proyecto → **Settings** → **Environment Variables**
+4. Agrega: Name = `API_FOOTBALL_KEY`, Value = (tu key), marca los 3 entornos
+5. **Save** → ve a Deployments → Redeploy
+
+---
+
+# PARTE B — ACTUALIZAR EN EL FUTURO (cada vez que haya datos nuevos)
+
+Cuando yo te entregue un `index.html` actualizado (o cualquier archivo nuevo):
+
+## Método visual (sin instalar nada)
+
+1. Ve a tu repositorio: `https://github.com/TU-USUARIO/mundial2026`
+2. Clic en el archivo que quieres actualizar (normalmente `index.html`)
+3. Clic en el ícono del **lápiz** (✏️ "Edit this file") arriba a la derecha
+4. Borra todo el contenido (Ctrl+A, luego Delete)
+5. Pega el contenido nuevo del archivo actualizado
+6. Abajo, clic en **"Commit changes"**
+7. **Vercel se actualiza solo en ~1 minuto** — misma URL, datos nuevos
+
+### Alternativa: reemplazar el archivo completo
+
+1. En tu repositorio, clic en **"Add file"** → **"Upload files"**
+2. Arrastra el `index.html` nuevo (reemplaza al anterior)
+3. **"Commit changes"**
+4. Vercel redespliega automáticamente
+
+> Para archivos grandes como el index.html, el método de "Upload files" (arrastrar)
+> suele ser más cómodo que copiar/pegar.
+
+---
+
+# ⚡ RESUMEN DEL FLUJO FUTURO
 
 ```
-mundial2026-vercel/
-├── index.html          ← El fixture completo
-├── vercel.json         ← Configuración de Vercel
-└── api/
-    └── scores.js       ← Función serverless (resultados live)
+Claude te da archivo nuevo
+        ↓
+Subes a GitHub (arrastrar + commit)  ← 30 segundos
+        ↓
+Vercel detecta el cambio y redespliega solo  ← 1 minuto
+        ↓
+Tu URL .vercel.app muestra los datos nuevos
 ```
 
-¡Eso es todo! Tu fixture estará en línea en menos de 5 minutos.
+**Nunca más creas proyectos nuevos. Nunca cambias de URL.**
+
+---
+
+# ❓ Problemas comunes
+
+**"No veo mis repositorios en Vercel"**
+→ En Vercel, ve a Settings de tu cuenta → Integrations → asegúrate que GitHub esté conectado y que Vercel tenga permiso para ver el repo `mundial2026`.
+
+**"Subí el archivo pero Vercel no se actualiza"**
+→ Ve a tu proyecto en Vercel → pestaña "Deployments" → verifica que aparezca un deploy nuevo. Si no, revisa que hayas hecho "Commit changes" en GitHub.
+
+**"El deploy falla"**
+→ Revisa que los 4 elementos estén en el repo: index.html, package.json, vercel.json y la carpeta api/scores.js. Si falta package.json, el deploy puede mostrar warnings.
+
+**"Quiero borrar el proyecto viejo que se creó con drag & drop"**
+→ En Vercel: ese proyecto viejo → Settings → abajo "Delete Project". No afecta al nuevo conectado con GitHub.
