@@ -1,7 +1,0 @@
-{
-  "name": "mundial2026-fixture",
-  "version": "1.0.0",
-  "description": "Fixture interactivo Mundial 2026 con predicciones modelo 4 capas",
-  "type": "module",
-  "private": true
-}
