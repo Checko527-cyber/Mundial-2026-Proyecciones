@@ -177,7 +177,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-si
 .br-match-box.bm-played{border-color:rgba(46,213,115,.38);}
 .br-match-box.bm-klem{border-color:rgba(167,139,250,.22);}
 .br-match-box.bm-final{border-color:rgba(232,197,71,.5);background:rgba(232,197,71,.03);}
-.br-team-row{display:flex;align-items:center;gap:4px;padding:4px 7px;border-bottom:1px solid var(--bd);}
+.br-team-row{display:flex;align-items:center;gap:3px;padding:3px 7px;border-bottom:1px solid var(--bd);min-height:22px;}
 .br-team-row:last-of-type{border-bottom:none;}
 .br-team-row.bwinner{background:rgba(46,213,115,.09);font-weight:600;}
 .br-team-row.bloser{opacity:.4;}
@@ -299,8 +299,8 @@ input:disabled{opacity:0.55;cursor:not-allowed;background:var(--sf2)!important;}
 
 <div class="tw">
   <div class="tabs">
-    <div class="tab on" onclick="nav('groups',this)">⚽ GRUPOS</div>
-    <div class="tab" onclick="nav('ko',this)">⚔️ ELIMINATORIAS</div>
+    <div class="tab" onclick="nav('groups',this)">⚽ GRUPOS</div>
+    <div class="tab on" onclick="nav('ko',this)">⚔️ ELIMINATORIAS</div>
     <div class="tab" onclick="nav('bracket',this)">🏆 BRACKET</div>
     <div class="tab" onclick="nav('stats',this)">📊 STATS</div>
     <div class="tab" onclick="nav('model',this)">🎯 MODELO 4C</div>
@@ -310,7 +310,7 @@ input:disabled{opacity:0.55;cursor:not-allowed;background:var(--sf2)!important;}
 <div class="ct">
 
 <!-- PANEL GRUPOS -->
-<div id="panel-groups" class="panel on">
+<div id="panel-groups" class="panel">
   <div class="tbar">
     <span class="ttl">FASE DE GRUPOS</span>
     <span class="pctr" id="pctr">0 / 48 partidos jugados</span>
@@ -359,7 +359,7 @@ input:disabled{opacity:0.55;cursor:not-allowed;background:var(--sf2)!important;}
 </div>
 
 <!-- PANEL ELIMINATORIAS INTERACTIVO -->
-<div id="panel-ko" class="panel">
+<div id="panel-ko" class="panel on">
   <div class="tbar">
     <span class="ttl">ELIMINACIÓN DIRECTA</span>
     <button class="sync-btn" onclick="syncLive()">🔴 LIVE</button><span class="pctr">Confirma ✓ para bloquear · penaltis con empate</span>
@@ -453,20 +453,20 @@ const GM = [
   ["A",1,1,3,2,1,"Akron · GDL","21:00 COL · 11 Jun ✓"],
   ["A",2,3,2,1,1,"MB · ATL","11:00 COL · 18 Jun ✓"],
   ["A",2,0,1,1,0,"Akron · GDL","20:00 COL · 18 Jun ✓"],
-  ["A",3,3,0,2,0,"Azteca · CDMx","20:00 COL · 24 Jun"],
-  ["A",3,2,1,1,2,"BBVA · GDL","20:00 COL · 24 Jun"],
+  ["A",3,3,0,0,3,"Azteca · CDMx","20:00 COL · 24 Jun ✓"],
+  ["A",3,2,1,1,0,"BBVA · GDL","20:00 COL · 24 Jun ✓"],
   ["B",1,1,2,1,1,"BMO · TOR","14:00 COL · 12 Jun ✓"],
   ["B",1,3,0,1,1,"Levi's · SF","14:00 COL · 13 Jun ✓"],
   ["B",2,0,2,4,1,"SoFi · LA","14:00 COL · 18 Jun ✓"],
   ["B",2,1,3,6,0,"BC Place · VAN","17:00 COL · 18 Jun ✓"],
-  ["B",3,0,1,1,1,"BC Place · VAN","14:00 COL · 24 Jun"],
-  ["B",3,2,3,2,0,"MB · ATL","14:00 COL · 24 Jun"],
+  ["B",3,0,1,2,1,"BC Place · VAN","14:00 COL · 24 Jun ✓"],
+  ["B",3,2,3,3,1,"MB · ATL","14:00 COL · 24 Jun ✓"],
   ["C",1,0,1,1,1,"MetLife · NJ","17:00 COL · 13 Jun ✓"],
   ["C",1,3,2,1,0,"Gillette · BOS","20:00 COL · 13 Jun ✓"],
   ["C",2,0,3,3,0,"Lincoln · PHI","20:00 COL · 19 Jun ✓"],
   ["C",2,2,1,0,1,"Gillette · BOS","17:00 COL · 19 Jun ✓"],
-  ["C",3,0,2,3,0,"AT&T · DAL","17:00 COL · 25 Jun"],
-  ["C",3,1,3,3,0,"MB · ATL","17:00 COL · 25 Jun"],
+  ["C",3,0,2,3,0,"AT&T · DAL","17:00 COL · 24 Jun ✓"],
+  ["C",3,1,3,4,2,"MB · ATL","17:00 COL · 24 Jun ✓"],
   ["D",1,2,3,4,1,"SoFi · LA","20:00 COL · 12 Jun ✓"],
   ["D",1,0,1,2,0,"BC Place · VAN","23:00 COL · 14 Jun ✓"],
   ["D",2,2,0,2,0,"Lumen · SEA","14:00 COL · 19 Jun ✓"],
@@ -483,43 +483,43 @@ const GM = [
   ["F",1,2,3,5,1,"BBVA · MTY","21:00 COL · 14 Jun ✓"],
   ["F",2,0,2,5,1,"NRG · HOU","12:00 COL · 20 Jun ✓"],
   ["F",2,3,1,0,4,"BBVA · MTY","23:00 COL · 21 Jun ✓"],
-  ["F",3,0,3,3,0,"AT&T · DAL","14:00 COL · 26 Jun"],
-  ["F",3,1,2,1,1,"SoFi · LA","14:00 COL · 26 Jun"],
+  ["F",3,0,3,3,0,"AT&T · DAL","14:00 COL · 25 Jun"],
+  ["F",3,1,2,1,1,"SoFi · LA","14:00 COL · 25 Jun"],
   ["G",1,0,1,1,1,"Lumen · SEA","14:00 COL · 15 Jun ✓"],
   ["G",1,2,3,2,2,"SoFi · LA","20:00 COL · 15 Jun ✓"],
-  ["G",2,0,2,3,0,"SoFi · LA","14:00 COL · 21 Jun"],
-  ["G",2,3,1,0,2,"BC Place · VAN","20:00 COL · 21 Jun"],
-  ["G",3,0,3,4,0,"Lumen · SEA","17:00 COL · 26 Jun"],
-  ["G",3,2,1,1,1,"HardRock · MIA","17:00 COL · 26 Jun"],
+  ["G",2,0,2,0,0,"SoFi · LA","14:00 COL · 21 Jun ✓"],
+  ["G",2,3,1,1,3,"BC Place · VAN","20:00 COL · 21 Jun ✓"],
+  ["G",3,0,3,2,0,"Lumen · SEA","17:00 COL · 26 Jun"],
+  ["G",3,2,1,2,1,"HardRock · MIA","17:00 COL · 26 Jun"],
   ["H",1,0,3,0,0,"MB · ATL","11:00 COL · 15 Jun ✓"],
   ["H",1,2,1,1,1,"HardRock · MIA","17:00 COL · 15 Jun ✓"],
-  ["H",2,0,2,3,0,"MB · ATL","11:00 COL · 21 Jun"],
-  ["H",2,1,3,3,0,"HardRock · MIA","17:00 COL · 21 Jun"],
+  ["H",2,0,2,4,0,"MB · ATL","11:00 COL · 21 Jun ✓"],
+  ["H",2,1,3,2,2,"HardRock · MIA","17:00 COL · 21 Jun ✓"],
   ["H",3,2,3,1,1,"AT&T · DAL","20:00 COL · 26 Jun"],
   ["H",3,1,0,2,1,"Akron · GDL","20:00 COL · 26 Jun"],
   ["I",1,0,2,3,1,"MetLife · NJ","14:00 COL · 16 Jun ✓"],
   ["I",1,3,1,1,4,"Gillette · BOS","17:00 COL · 16 Jun ✓"],
-  ["I",2,0,3,4,0,"Lincoln · PHI","16:00 COL · 22 Jun"],
-  ["I",2,1,2,2,1,"MetLife · NJ","19:00 COL · 22 Jun"],
+  ["I",2,0,3,3,0,"Lincoln · PHI","16:00 COL · 22 Jun ✓"],
+  ["I",2,1,2,3,2,"MetLife · NJ","19:00 COL · 22 Jun ✓"],
   ["I",3,1,0,2,2,"MetLife · NJ","14:00 COL · 26 Jun"],
   ["I",3,2,3,2,0,"Gillette · BOS","14:00 COL · 26 Jun"],
   ["J",1,0,2,3,0,"Arrowhead · KC","20:00 COL · 16 Jun ✓"],
   ["J",1,1,3,3,1,"Levi's · SF","23:00 COL · 17 Jun ✓"],
-  ["J",2,0,1,2,1,"AT&T · DAL","12:00 COL · 22 Jun"],
-  ["J",2,2,3,2,1,"Levi's · SF","23:00 COL · 23 Jun"],
+  ["J",2,0,1,2,0,"AT&T · DAL","12:00 COL · 22 Jun ✓"],
+  ["J",2,2,3,2,1,"Levi's · SF","23:00 COL · 23 Jun ✓"],
   ["J",3,1,2,2,1,"Arrowhead · KC","21:00 COL · 27 Jun"],
   ["J",3,3,0,4,0,"AT&T · DAL","21:00 COL · 27 Jun"],
   ["K",1,1,2,1,1,"NRG · HOU","12:00 COL · 17 Jun ✓"],
   ["K",1,3,0,1,3,"Azteca · CDMx","21:00 COL · 17 Jun ✓"],
-  ["K",2,1,3,3,0,"NRG · HOU","12:00 COL · 23 Jun"],
-  ["K",2,0,2,2,0,"Akron · GDL","21:00 COL · 23 Jun"],
+  ["K",2,1,3,5,0,"NRG · HOU","12:00 COL · 23 Jun ✓"],
+  ["K",2,0,2,1,0,"Akron · GDL","21:00 COL · 23 Jun ✓"],
   ["K",3,0,1,1,1,"HardRock · MIA","18:30 COL · 27 Jun"],
   ["K",3,2,3,1,0,"NRG · HOU","18:30 COL · 27 Jun"],
   ["L",1,0,1,4,2,"AT&T · DAL","15:00 COL · 17 Jun ✓"],
   ["L",1,2,3,1,0,"BMO · TOR","18:00 COL · 17 Jun ✓"],
-  ["L",2,0,2,3,0,"Gillette · BOS","15:00 COL · 23 Jun"],
-  ["L",2,3,1,0,2,"BMO · TOR","18:00 COL · 23 Jun"],
-  ["L",3,3,0,4,0,"MetLife · NJ","16:00 COL · 27 Jun"],
+  ["L",2,0,2,0,0,"Gillette · BOS","15:00 COL · 23 Jun ✓"],
+  ["L",2,3,1,0,1,"BMO · TOR","18:00 COL · 23 Jun ✓"],
+  ["L",3,3,0,3,0,"MetLife · NJ","16:00 COL · 27 Jun"],
   ["L",3,1,2,2,0,"BMO · TOR","16:00 COL · 27 Jun"]
 ];
 
@@ -589,118 +589,76 @@ const PRED_KEY = {
 // Indexado por gmIdx (alineado con GM array). conf: 2=alta 1=media 0=baja
 // ═══════════════════════════════════════════════════════════════
 const MODEL_4C = {
-  // ─── J3 Grupo A (MEX ya clasificó 1°) ───
-  4:  {opta:'MEX 1° asegurado', pele:'MEX', market:'MEX -200', perf:'local CDMx', pred:'2-0', conf:2, note:'México ya 1°, cierra ante Checa'},
-  5:  {opta:'KOR 60%', pele:'KOR', market:'KOR -130', perf:'pelea 2°', pred:'1-2', conf:1, note:'Corea necesita ganar para asegurar 2°'},
-  // ─── J3 Grupo B (SUI/CAN líderes) ───
-  10: {opta:'pareja', pele:'empate', market:'SUI -120', perf:'ambos 4pts', pred:'1-1', conf:1, note:'🔑 Define 1° · ambos ya casi clasificados'},
-  11: {opta:'BOS 70%', pele:'BOS', market:'BOS -200', perf:'BOS pelea 3°', pred:'2-0', conf:2, note:'Bosnia necesita ganar para el mejor 3°'},
-  // ─── J3 Grupo C (BRA 1° / MAR 2°, HAI eliminado) ───
-  16: {opta:'BRA 80%', pele:'BRA', market:'BRA -300', perf:'busca 1°', pred:'3-0', conf:2, note:'Brasil debe ganar para asegurar 1° sobre MAR'},
-  17: {opta:'MAR 75%', pele:'MAR', market:'MAR -250', perf:'MAR clasifica', pred:'3-0', conf:2, note:'Marruecos golea a Haití (ya eliminado)'},
-  // ─── J3 Grupo D (USA 1° / AUS, TUR eliminado) ───
-  22: {opta:'pareja', pele:'USA', market:'USA -110', perf:'USA ya 1°', pred:'1-1', conf:1, note:'EE.UU. ya clasificado 1°, rota'},
-  23: {opta:'AUS 55%', pele:'AUS', market:'AUS -140', perf:'AUS necesita', pred:'2-1', conf:1, note:'Australia debe ganar para 2°; PAR vivo'},
-  // ─── J3 Grupo E (GER 1° clasificado / ECU pelea) ───
-  28: {opta:'GER 60%', pele:'GER', market:'GER -150', perf:'GER ya 1°', pred:'2-1', conf:1, note:'Alemania ya clasificada; Ecuador pelea 2°'},
-  29: {opta:'CIV 70%', pele:'CIV', market:'CIV -250', perf:'CIV pelea 2°', pred:'3-0', conf:2, note:'C.Marfil debe golear a Curazao para 2°'},
-  // ─── J3 Grupo F (NED 1° / JAP 2°, TUN eliminado) ───
-  34: {opta:'NED 80%', pele:'NED', market:'NED -350', perf:'NED 1°', pred:'3-0', conf:2, note:'Países Bajos golea a Túnez (eliminado)'},
-  35: {opta:'pareja', pele:'JAP', market:'JAP -120', perf:'define 1°', pred:'1-1', conf:0, note:'🔑 Japón vs Suecia define posiciones'},
-  // ─── J2 Grupo G ───
-  38: {opta:'BEL 70%', pele:'BEL', market:'BEL -250', perf:'De Bruyne', pred:'3-0', conf:2, note:'Bélgica debe ganar tras empatar con Egipto'},
-  39: {opta:'EGY 65%', pele:'EGY', market:'EGY -180', perf:'Salah', pred:'0-2', conf:2, note:'Egipto favorito ante N.Zelanda'},
-  // ─── J3 Grupo G ───
-  40: {opta:'BEL 82%', pele:'BEL', market:'BEL -400', perf:'cierra', pred:'4-0', conf:2, note:'Bélgica golea a N.Zelanda'},
-  41: {opta:'EGY 50%', pele:'pareja', market:'pareja', perf:'Salah vs Taremi', pred:'1-1', conf:0, note:'🔑 Egipto-Irán define 2°'},
-  // ─── J2 Grupo H ───
-  44: {opta:'ESP 88%', pele:'ESP', market:'ESP -800', perf:'Yamal', pred:'3-0', conf:2, note:'España debe reaccionar tras 0-0 con CPV'},
-  45: {opta:'URU 75%', pele:'URU', market:'URU -300', perf:'Núñez', pred:'3-0', conf:2, note:'Uruguay favorito ante Cabo Verde'},
-  // ─── J3 Grupo H ───
-  46: {opta:'KSA 45%', pele:'pareja', market:'pareja', perf:'honor', pred:'1-1', conf:1, note:'Arabia vs Cabo Verde · pelean 3°'},
-  47: {opta:'ESP 70%', pele:'ESP', market:'ESP -180', perf:'Bielsa vs DLF', pred:'2-1', conf:0, note:'🔑 Uruguay-España define 1°'},
-  // ─── J2 Grupo I (FRA/NOR ganaron J1) ───
-  50: {opta:'FRA 90%', pele:'FRA', market:'FRA -700', perf:'goleada', pred:'4-0', conf:2, note:'Francia golea a Irak'},
-  51: {opta:'NOR 55%', pele:'NOR', market:'NOR -130', perf:'Haaland', pred:'2-1', conf:1, note:'Noruega vs Senegal · duelo por 2°'},
-  // ─── J3 Grupo I ───
-  52: {opta:'pareja 55/45', pele:'empate', market:'NOR +120', perf:'Mbappé vs Haaland', pred:'2-2', conf:0, note:'🔥 EL PARTIDO · ambos ya clasif., juegan 1°'},
-  53: {opta:'SEN 75%', pele:'SEN', market:'SEN -300', perf:'busca 3°', pred:'2-0', conf:2, note:'Senegal golea a Irak por el 3°'},
-  // ─── J2 Grupo J (ARG/AUT ganaron J1) ───
-  56: {opta:'ARG 65%', pele:'ARG', market:'ARG -180', perf:'Messi hat-trick J1', pred:'2-1', conf:0, note:'⚡ TRAMPA · Bielsa ganó 2-0 en BsAs; Messi en forma'},
-  57: {opta:'DZA 55%', pele:'DZA', market:'DZA -140', perf:'eliminación', pred:'2-1', conf:1, note:'Argelia vs Jordania · ganador sigue vivo'},
-  // ─── J3 Grupo J ───
-  58: {opta:'AUT 60%', pele:'AUT', market:'AUT -150', perf:'clasifica', pred:'2-1', conf:1, note:'Austria pelea 2°/3° ante Argelia'},
-  59: {opta:'ARG 90%', pele:'ARG', market:'ARG -800', perf:'Messi cierra', pred:'4-0', conf:2, note:'Argentina golea a Jordania'},
-  // ─── J2 Grupo K (COL ganó, POR empató) ───
-  62: {opta:'POR 80%', pele:'POR', market:'POR -350', perf:'CR7', pred:'3-0', conf:2, note:'Portugal debe golear a Uzbekistán'},
-  63: {opta:'COL 70%', pele:'COL', market:'COL -200', perf:'Díaz', pred:'2-0', conf:2, note:'Colombia clasifica si gana a RD Congo'},
-  // ─── J3 Grupo K ───
-  64: {opta:'pareja 50/50', pele:'empate', market:'pareja', perf:'Díaz vs CR7', pred:'1-1', conf:0, note:'🔥 EL PARTIDO DEL TORNEO · define 1° del grupo'},
-  65: {opta:'RDC 55%', pele:'RDC', market:'RDC -120', perf:'honor', pred:'1-0', conf:1, note:'RD Congo vs Uzbekistán por el 3°'},
-  // ─── J2 Grupo L (ENG ganó, GHA ganó) ───
-  68: {opta:'ENG 85%', pele:'ENG', market:'ENG -500', perf:'Kane brace J1', pred:'3-0', conf:2, note:'Inglaterra debe golear a Ghana'},
-  69: {opta:'CRO 70%', pele:'CRO', market:'CRO -200', perf:'Modric', pred:'0-2', conf:2, note:'Croacia debe ganar a Panamá para revivir'},
-  // ─── J3 Grupo L ───
-  70: {opta:'ENG 90%', pele:'ENG', market:'ENG -800', perf:'cierra 1°', pred:'4-0', conf:2, note:'Inglaterra golea a Panamá'},
-  71: {opta:'CRO 60%', pele:'CRO', market:'CRO -160', perf:'Modric último', pred:'2-0', conf:1, note:'Croacia vs Ghana define 2°'},
+  22: {opta:"empate", pele:"USA", market:"USA -110", perf:"USA rota", pred:"1-1", conf:0, note:"USA ya 1° (rota); Turquía eliminada → sin presión real"},
+  23: {opta:"AUS 55%", pele:"AUS", market:"AUS -130", perf:"AUS necesita pt", pred:"2-1", conf:1, note:"Australia con empate o victoria clasifica; Paraguay necesita ganar para top-2"},
+  28: {opta:"GER 60%", pele:"GER", market:"GER -150", perf:"GER ya 1°", pred:"2-1", conf:1, note:"Alemania ya clasificada 1°; Ecuador pelea 2° (debe puntuar)"},
+  29: {opta:"CIV 72%", pele:"CIV", market:"CIV -250", perf:"CIV pelea 2°", pred:"3-0", conf:2, note:"C.Marfil debe ganar para 2°; Curazao eliminado"},
+  34: {opta:"NED 80%", pele:"NED", market:"NED -350", perf:"TUN eliminado", pred:"3-0", conf:2, note:"P.Bajos golea a Túnez (eliminado); define 1°"},
+  35: {opta:"pareja", pele:"JAP", market:"JAP -120", perf:"Gyökeres vs Kubo", pred:"1-1", conf:0, note:"🔑 Japón vs Suecia define 1°/2° del grupo"},
+  40: {opta:"BEL 70%", pele:"BEL", market:"BEL -250", perf:"BEL 2 empates", pred:"2-0", conf:1, note:"⚠ Bélgica DEBE ganar (2 empates); N.Zelanda sin opciones"},
+  41: {opta:"EGY 55%", pele:"EGY", market:"EGY -120", perf:"Salah 5 g/a", pred:"2-1", conf:1, note:"🔑 Egipto (Salah on fire) vs Irán define clasificación; ambos vivos"},
+  46: {opta:"KSA 45%", pele:"empate", market:"pareja", perf:"CPV 2pts sorpresa", pred:"1-1", conf:0, note:"Cabo Verde (2pts, sorpresa) pelea 3°; Arabia casi eliminada"},
+  47: {opta:"ESP 70%", pele:"ESP", market:"ESP -180", perf:"Yamal/Bielsa", pred:"2-1", conf:1, note:"🔑 España ya casi 1°; Uruguay necesita puntos (Bielsa busca orden)"},
+  52: {opta:"55/45 FRA", pele:"empate", market:"FRA -110", perf:"Mbappé vs Haaland", pred:"2-2", conf:0, note:"🔥 EL PARTIDO · ambos clasificados, definen 1°; FRA +5GD vs NOR +4GD"},
+  53: {opta:"SEN 70%", pele:"SEN", market:"SEN -200", perf:"SEN pelea 3°", pred:"2-0", conf:1, note:"Senegal debe ganar para mejor 3°; Irak eliminado"},
+  58: {opta:"AUT 60%", pele:"AUT", market:"AUT -140", perf:"AUT pelea 2°", pred:"2-1", conf:1, note:"Austria pelea 2°/3° ante Argelia (también viva)"},
+  59: {opta:"ARG 88%", pele:"ARG", market:"ARG -600", perf:"Messi récord", pred:"4-0", conf:2, note:"Argentina ya 1° (Messi máximo goleador histórico); golea a Jordania"},
+  64: {opta:"50/50", pele:"empate", market:"pareja", perf:"COL 6pts vs POR 4pts", pred:"1-1", conf:0, note:"🔥 EL PARTIDO DEL TORNEO · Colombia lidera (6pts); empate le da 1°. Díaz vs CR7"},
+  65: {opta:"pareja", pele:"RDC", market:"RDC -110", perf:"ambos eliminados", pred:"1-0", conf:1, note:"RD Congo vs Uzbekistán (ambos sin opciones de clasificar)"},
+  70: {opta:"ENG 85%", pele:"ENG", market:"ENG -500", perf:"ENG líder GD", pred:"3-0", conf:2, note:"Inglaterra (4pts líder GD) golea a Panamá (eliminado)"},
+  71: {opta:"CRO 65%", pele:"CRO", market:"CRO -160", perf:"CRO revivió", pred:"2-0", conf:1, note:"🔑 Croacia (ganó a Panamá) vs Ghana (4pts) definen 2°"},
 };
 
 const KO_ROUNDS = [
-  // ── 16AVOS (32→16) · 10-17 Jul ─────────────────────────────
-  {id:"r16",title:"16avos de Final",sub:"28 Jun – 3 Jul 2026",badge:"32 → 16",bc:"gb-med",
+  {id:"r16",title:"Ronda de 32",sub:"28 Jun – 3 Jul 2026",badge:"32 → 16",bc:"gb-med",
    matches:[
-    {id:"m49",label:"P49",slotH:{g:"A",p:1},slotA:{g:"B",p:2},kPred:0,sede:"AT&T · DAL",fecha:"28 Jun"},
-    {id:"m50",label:"P50",slotH:{g:"C",p:1},slotA:{g:"D",p:2},kPred:0,sede:"SoFi · LA",fecha:"28 Jun"},
-    {id:"m51",label:"P51",slotH:{g:"B",p:1},slotA:{g:"A",p:2},kPred:0,sede:"MetLife · NJ",fecha:"29 Jun"},
-    {id:"m52",label:"P52",slotH:{g:"D",p:1},slotA:{g:"C",p:2},kPred:0,sede:"NRG · HOU",fecha:"29 Jun"},
-    {id:"m53",label:"P53",slotH:{g:"E",p:1},slotA:{g:"F",p:2},kPred:0,sede:"Arrowhead · KC",fecha:"30 Jun"},
-    {id:"m54",label:"P54",slotH:{g:"G",p:1},slotA:{g:"H",p:2},kPred:0,sede:"BC Place · VAN",fecha:"30 Jun"},
-    {id:"m55",label:"P55",slotH:{g:"F",p:1},slotA:{g:"E",p:2},kPred:0,sede:"Lumen · SEA",fecha:"1 Jul"},
-    {id:"m56",label:"P56",slotH:{g:"H",p:1},slotA:{g:"G",p:2},kPred:0,sede:"Gillette · BOS",fecha:"1 Jul"},
-    {id:"m57",label:"P57",slotH:{g:"I",p:1},slotA:{g:"J",p:2},kPred:0,sede:"MB · ATL",fecha:"14 Jul"},
-    {id:"m58",label:"P58",slotH:{g:"K",p:1},slotA:{g:"L",p:2},kPred:0,sede:"HardRock · MIA",fecha:"14 Jul"},
-    {id:"m59",label:"P59",slotH:{g:"J",p:1},slotA:{g:"I",p:2},kPred:0,sede:"BBVA · MTY",fecha:"15 Jul"},
-    {id:"m60",label:"P60",slotH:{g:"L",p:1},slotA:{g:"K",p:2},kPred:0,sede:"Azteca · CDMx",fecha:"15 Jul"},
-    {id:"m61",label:"P61",slotH:{p:"t3",t:0},slotA:{p:"t3",t:1},kPred:0,sede:"Lincoln · PHI",fecha:"16 Jul"},
-    {id:"m62",label:"P62",slotH:{p:"t3",t:2},slotA:{p:"t3",t:3},kPred:0,sede:"Akron · GDL",fecha:"16 Jul"},
-    {id:"m63",label:"P63",slotH:{p:"t3",t:4},slotA:{p:"t3",t:5},kPred:0,sede:"AT&T · DAL",fecha:"17 Jul"},
-    {id:"m64",label:"P64",slotH:{p:"t3",t:6},slotA:{p:"t3",t:7},kPred:0,sede:"SoFi · LA",fecha:"17 Jul"}
+    {id:"m73",label:"P73",teamH:"🇿🇦 Sudáfrica",teamA:"🇨🇦 Canadá",origH:"2°A",origA:"2°B",kPred:0,sede:"SoFi · LA",fecha:"28 Jun"},
+    {id:"m74",label:"P74",teamH:"🇧🇷 Brasil",teamA:"🇯🇵 Japón",origH:"1°C",origA:"2°F",kPred:0,sede:"NRG · HOU",fecha:"29 Jun"},
+    {id:"m75",label:"P75",teamH:"🇩🇪 Alemania",teamA:"🇵🇾 Paraguay",origH:"1°E",origA:"3°D",kPred:0,sede:"Gillette · BOS",fecha:"29 Jun"},
+    {id:"m76",label:"P76",teamH:"🇳🇱 P.Bajos",teamA:"🇲🇦 Marruecos",origH:"1°F",origA:"2°C",kPred:0,sede:"Monterrey",fecha:"29 Jun"},
+    {id:"m77",label:"P77",teamH:"🇨🇮 C.Marfil",teamA:"🇳🇴 Noruega",origH:"2°E",origA:"2°I",kPred:0,sede:"AT&T · DAL",fecha:"30 Jun"},
+    {id:"m78",label:"P78",teamH:"🇫🇷 Francia",teamA:"🇸🇪 Suecia",origH:"1°I",origA:"3°F",kPred:0,sede:"MetLife · NJ",fecha:"30 Jun"},
+    {id:"m79",label:"P79",teamH:"🇲🇽 México",teamA:"🇪🇨 Ecuador",origH:"1°A",origA:"3°E",kPred:0,sede:"Azteca · CDMX",fecha:"30 Jun"},
+    {id:"m80",label:"P80",teamH:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra",teamA:"🇨🇩 RD Congo",origH:"1°L",origA:"3°K",kPred:0,sede:"Mercedes · ATL",fecha:"1 Jul"},
+    {id:"m81",label:"P81",teamH:"🇧🇪 Bélgica",teamA:"🇸🇳 Senegal",origH:"1°G",origA:"3°I",kPred:0,sede:"Lumen · SEA",fecha:"1 Jul"},
+    {id:"m82",label:"P82",teamH:"🇺🇸 EE.UU.",teamA:"🇧🇦 Bosnia",origH:"1°D",origA:"3°B",kPred:0,sede:"Levi's · SF",fecha:"1 Jul"},
+    {id:"m83",label:"P83",teamH:"🇪🇸 España",teamA:"🇦🇹 Austria",origH:"1°H",origA:"2°J",kPred:0,sede:"SoFi · LA",fecha:"2 Jul"},
+    {id:"m84",label:"P84",teamH:"🇵🇹 Portugal",teamA:"🇭🇷 Croacia",origH:"2°K",origA:"2°L",kPred:0,sede:"BMO · TOR",fecha:"2 Jul"},
+    {id:"m85",label:"P85",teamH:"🇨🇭 Suiza",teamA:"🇩🇿 Argelia",origH:"1°B",origA:"3°J",kPred:0,sede:"BC Place · VAN",fecha:"2 Jul"},
+    {id:"m86",label:"P86",teamH:"🇦🇺 Australia",teamA:"🇪🇬 Egipto",origH:"2°D",origA:"2°G",kPred:0,sede:"AT&T · DAL",fecha:"3 Jul"},
+    {id:"m87",label:"P87",teamH:"🇦🇷 Argentina",teamA:"🇨🇻 Cabo Verde",origH:"1°J",origA:"2°H",kPred:0,sede:"Hard Rock · MIA",fecha:"3 Jul"},
+    {id:"m88",label:"P88",teamH:"🇨🇴 Colombia",teamA:"🇬🇭 Ghana",origH:"1°K",origA:"3°L",kPred:0,sede:"Arrowhead · KC",fecha:"3 Jul"}
   ]},
-  // ── OCTAVOS (16→8) · 19-22 Jul ──────────────────────────────
   {id:"r8",title:"Octavos de Final",sub:"4 – 7 Julio 2026",badge:"16 → 8",bc:"gb-med",
    matches:[
-    {id:"m65",label:"O1",winOf:{a:"m49",b:"m51"},kPred:0,sede:"MetLife · NJ",fecha:"4 Jul"},
-    {id:"m66",label:"O2",winOf:{a:"m50",b:"m52"},kPred:0,sede:"SoFi · LA",fecha:"4 Jul"},
-    {id:"m67",label:"O3",winOf:{a:"m53",b:"m55"},kPred:0,sede:"AT&T · DAL",fecha:"5 Jul"},
-    {id:"m68",label:"O4",winOf:{a:"m54",b:"m56"},kPred:0,sede:"NRG · HOU",fecha:"5 Jul"},
-    {id:"m69",label:"O5",winOf:{a:"m57",b:"m59"},kPred:0,sede:"Arrowhead · KC",fecha:"6 Jul"},
-    {id:"m70",label:"O6",winOf:{a:"m58",b:"m60"},kPred:0,sede:"BC Place · VAN",fecha:"6 Jul"},
-    {id:"m71",label:"O7",winOf:{a:"m61",b:"m63"},kPred:0,sede:"Gillette · BOS",fecha:"7 Jul"},
-    {id:"m72",label:"O8",winOf:{a:"m62",b:"m64"},kPred:0,sede:"Lumen · SEA",fecha:"7 Jul"}
+    {id:"m89",label:"O1",winOf:{a:"m75",b:"m78"},kPred:0,sede:"Philadelphia",fecha:"4 Jul"},
+    {id:"m90",label:"O2",winOf:{a:"m73",b:"m76"},kPred:0,sede:"NRG · HOU",fecha:"4 Jul"},
+    {id:"m91",label:"O3",winOf:{a:"m74",b:"m77"},kPred:0,sede:"MetLife · NJ",fecha:"5 Jul"},
+    {id:"m92",label:"O4",winOf:{a:"m79",b:"m80"},kPred:0,sede:"Azteca · CDMX",fecha:"5 Jul"},
+    {id:"m93",label:"O5",winOf:{a:"m84",b:"m83"},kPred:0,sede:"AT&T · DAL",fecha:"6 Jul"},
+    {id:"m94",label:"O6",winOf:{a:"m82",b:"m81"},kPred:0,sede:"SoFi · LA",fecha:"6 Jul"},
+    {id:"m95",label:"O7",winOf:{a:"m85",b:"m88"},kPred:0,sede:"Arrowhead · KC",fecha:"7 Jul"},
+    {id:"m96",label:"O8",winOf:{a:"m86",b:"m87"},kPred:0,sede:"Hard Rock · MIA",fecha:"7 Jul"}
   ]},
-  // ── CUARTOS (8→4) · 25-27 Jul ───────────────────────────────
-  {id:"qf",title:"Cuartos de Final",sub:"9 – 11 Julio 2026",badge:"8 → 4",bc:"gb-hard",
+  {id:"qf",title:"Cuartos de Final",sub:"9 – 11 Julio 2026",badge:"8 → 4",bc:"gb-hi",
    matches:[
-    {id:"m73",label:"QF1",winOf:{a:"m65",b:"m67"},kPred:0,sede:"MetLife · NJ",fecha:"9 Jul"},
-    {id:"m74",label:"QF2",winOf:{a:"m66",b:"m68"},kPred:0,sede:"AT&T · DAL",fecha:"10 Jul"},
-    {id:"m75",label:"QF3",winOf:{a:"m69",b:"m71"},kPred:0,sede:"SoFi · LA",fecha:"10 Jul"},
-    {id:"m76",label:"QF4",winOf:{a:"m70",b:"m72"},kPred:0,sede:"MB · ATL",fecha:"11 Jul"}
+    {id:"m97",label:"C1",winOf:{a:"m89",b:"m90"},kPred:0,sede:"Boston",fecha:"9 Jul"},
+    {id:"m98",label:"C2",winOf:{a:"m91",b:"m92"},kPred:0,sede:"LA",fecha:"10 Jul"},
+    {id:"m99",label:"C3",winOf:{a:"m93",b:"m94"},kPred:0,sede:"KC",fecha:"11 Jul"},
+    {id:"m100",label:"C4",winOf:{a:"m95",b:"m96"},kPred:0,sede:"Miami",fecha:"11 Jul"}
   ]},
-  // ── SEMIFINALES (4→2) · 30 Jul – 1 Ago ─────────────────────
   {id:"sf",title:"Semifinales",sub:"14 – 15 Julio 2026",badge:"4 → 2",bc:"gb-k",
    matches:[
-    {id:"m77",label:"SF1",winOf:{a:"m73",b:"m75"},kPred:0,sede:"MetLife · NJ",fecha:"14 Jul"},
-    {id:"m78",label:"SF2",winOf:{a:"m74",b:"m76"},kPred:0,sede:"AT&T · DAL",fecha:"15 Jul"}
+    {id:"m101",label:"SF1",winOf:{a:"m97",b:"m98"},kPred:0,sede:"Dallas",fecha:"14 Jul"},
+    {id:"m102",label:"SF2",winOf:{a:"m99",b:"m100"},kPred:0,sede:"Atlanta",fecha:"15 Jul"}
   ]},
-  // ── TERCER LUGAR ─────────────────────────────────────────────
   {id:"3rd",title:"Tercer Lugar",sub:"18 Julio 2026",badge:"3°–4°",bc:"gb-med",
    matches:[
-    {id:"m79",label:"3°",loseOf:{a:"m77",b:"m78"},kPred:0,sede:"SoFi · LA",fecha:"18 Jul"}
+    {id:"m103",label:"3°",loseOf:{a:"m101",b:"m102"},kPred:0,sede:"Miami",fecha:"18 Jul"}
   ]},
-  // ── FINAL ─────────────────────────────────────────────────────
   {id:"final",title:"Gran Final",sub:"19 Julio 2026 · MetLife Stadium",badge:"🏆 CAMPEÓN",bc:"gb-k",
    matches:[
-    {id:"m80",label:"FINAL",winOf:{a:"m77",b:"m78"},kPred:0,sede:"MetLife · NJ",fecha:"19 Jul"}
+    {id:"m104",label:"FINAL",winOf:{a:"m101",b:"m102"},kPred:0,sede:"MetLife · NJ",fecha:"19 Jul"}
   ]}
 ];
 
@@ -834,24 +792,29 @@ function resolveLoser(matchId){
 function teamFor(m,side){
   const r=S[gkko(m.id)];
   if(r&&r.played){
-    return side==='H'?(r.teamH||KLEM[m.id]||'?'):(r.teamA||'?');
+    return side==='H'?(r.teamH||m.teamH||'?'):(r.teamA||m.teamA||'?');
   }
-  // Proyección 4C: usar el equipo proyectado para esta casilla
+  // R32: equipos fijos confirmados (grupos completos)
+  if(side==='H' && m.teamH) return m.teamH;
+  if(side==='A' && m.teamA) return m.teamA;
+  // Proyección 4C para rondas siguientes: usar el equipo proyectado
   const proj = PROJ_BRACKET[m.id];
   if(proj){
     const pt = side==='H'?proj.h:proj.a;
     if(pt) return pt;
   }
   if(side==='H'){
-    if(m.slotH)  return resolveSlot(m.slotH,m.id);
-    if(m.winOf)  return resolveWinner(m.winOf.a)||(KLEM[m.id]||'W('+m.winOf.a+')');
-    if(m.loseOf) return resolveLoser(m.loseOf.a)||('L('+m.loseOf.a+')');
+    if(m.winOf)  return resolveWinner(m.winOf.a)||('Gana '+labelOf(m.winOf.a));
+    if(m.loseOf) return resolveLoser(m.loseOf.a)||('Pierde '+labelOf(m.loseOf.a));
   } else {
-    if(m.slotA)  return resolveSlot(m.slotA,m.id);
-    if(m.winOf)  return resolveWinner(m.winOf.b)||(KLEM[m.id]||'W('+m.winOf.b+')');
-    if(m.loseOf) return resolveLoser(m.loseOf.b)||('L('+m.loseOf.b+')');
+    if(m.winOf)  return resolveWinner(m.winOf.b)||('Gana '+labelOf(m.winOf.b));
+    if(m.loseOf) return resolveLoser(m.loseOf.b)||('Pierde '+labelOf(m.loseOf.b));
   }
-  return KLEM[m.id]||'TBD';
+  return 'TBD';
+}
+function labelOf(mid){
+  const m = KO_ROUNDS.flatMap(r=>r.matches).find(x=>x.id===mid);
+  return m?m.label:mid;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1032,12 +995,12 @@ function projectTournament(){
   r16.forEach(m=>{
     const k = gkko(m.id), st = S[k];
     let h, a, w, pr=null;
+    // R32: equipos fijos confirmados
+    h = (st&&st.teamH) || m.teamH || '?';
+    a = (st&&st.teamA) || m.teamA || '?';
     if(st && st.played){ // resultado real
-      h = st.teamH || resolveSlot(m.slotH, m.id);
-      a = st.teamA || resolveSlot(m.slotA, m.id);
       w = st.h>st.a ? h : st.a>st.h ? a : (st.pen==='H'?h:a);
     } else {
-      h = slotTeam(m.slotH); a = slotTeam(m.slotA);
       const sim = simMatch(h, a);
       w = sim.winner; pr = sim.pred;
     }
@@ -1375,8 +1338,9 @@ function slotOrigin(slot){
 }
 // Devuelve la etiqueta de origen para partidos de rondas avanzadas (de qué llave viene)
 function matchOrigin(m, side){
-  if(m.slotH || m.slotA){ // 16avos: usa origen de grupo
-    return slotOrigin(side==='H'?m.slotH:m.slotA);
+  // R32: usa el origen de grupo (1°A, 2°B, 3°D, etc.)
+  if(m.origH || m.origA){
+    return side==='H' ? (m.origH||'') : (m.origA||'');
   }
   if(m.winOf){ // rondas siguientes: muestra la llave de origen
     const src = side==='H'?m.winOf.a:m.winOf.b;
@@ -1402,15 +1366,24 @@ function renderBracket(){
   const qf=KO_ROUNDS.find(r=>r.id==='qf').matches;
   const sf=KO_ROUNDS.find(r=>r.id==='sf').matches;
   const fin=KO_ROUNDS.find(r=>r.id==='final').matches[0];
-  const BW=108,BH=52,CONN=14,PAD_T=28,SLOTS=8;
-  const CANVAS_H=PAD_T+SLOTS*(BH+12)+70;
+  const BW=116,BH=58,CONN=16,PAD_T=32,SLOTS=8;
+  const CANVAS_H=PAD_T+SLOTS*(BH+28)+90;
   const COL_W=BW+CONN*2,TOTAL_W=COL_W*9+20;
   function slotY(i,N){const u=CANVAS_H-PAD_T-20,s=u/N;return PAD_T+s*i+s/2-BH/2;}
   function colX(ci){return ci*COL_W+10;}
   function hasWin(id){return resolveWinner(id)!==null;}
   const P={};
   function place(ms,ci,yFn){ms.forEach((m,i)=>{P[m.id]={x:colX(ci),y:yFn(i,ms.length),cy:yFn(i,ms.length)+BH/2};});}
-  place(r16.slice(0,8),0,(i)=>slotY(i,SLOTS));
+  // Reordenar 16avos según el mapeo winOf real para que cada par alimente
+  // su octavos correspondiente en posiciones adyacentes (líneas coherentes)
+  function r16OrderedFor(r8subset){
+    const order=[];
+    r8subset.forEach(mo=>{ if(mo&&mo.winOf){ order.push(mo.winOf.a); order.push(mo.winOf.b); } });
+    return order.map(id=>r16.find(m=>m.id===id)).filter(Boolean);
+  }
+  const r16top = r16OrderedFor(r8.slice(0,4));    // alimentan octavos 0-3 (lado izq)
+  const r16bot = r16OrderedFor(r8.slice(4,8));    // alimentan octavos 4-7 (lado der)
+  place(r16top,0,(i)=>slotY(i,SLOTS));
   place(r8.slice(0,4),1,(i)=>slotY(i*2+0.5,SLOTS));
   place(qf.slice(0,2),2,(i)=>slotY(i*4+1.5,SLOTS));
   place(sf.slice(0,1),3,(i)=>slotY(3.5,SLOTS));
@@ -1418,18 +1391,32 @@ function renderBracket(){
   place(sf.slice(1,2),5,(i)=>slotY(3.5,SLOTS));
   place(qf.slice(2,4),6,(i)=>slotY(i*4+1.5,SLOTS));
   place(r8.slice(4,8),7,(i)=>slotY(i*2+0.5,SLOTS));
-  place(r16.slice(8,16),8,(i)=>slotY(i,SLOTS));
+  place(r16bot,8,(i)=>slotY(i,SLOTS));
   let svgp='';
   const LC='#2a2d3a',LA='rgba(46,213,115,.55)';
   function ln(x1,y1,x2,y2,act){const c=act?LA:LC,mx=(x1+x2)/2;svgp+=`<path d="M${x1},${y1} L${mx},${y1} L${mx},${y2} L${x2},${y2}" fill="none" stroke="${c}" stroke-width="${act?1.8:1}"/>`;}
-  [[0,1],[2,3],[4,5],[6,7]].forEach(([a,b],qi)=>{const ma=r16[a],mb=r16[b],mo=r8[qi];if(!ma||!mb||!mo)return;ln(P[ma.id].x+BW,P[ma.id].cy,P[mo.id].x,P[mo.id].cy,hasWin(ma.id));ln(P[mb.id].x+BW,P[mb.id].cy,P[mo.id].x,P[mo.id].cy,hasWin(mb.id));});
-  [[0,1],[2,3]].forEach(([a,b],qi)=>{const ma=r8[a],mb=r8[b],mq=qf[qi];if(!ma||!mb||!mq)return;ln(P[ma.id].x+BW,P[ma.id].cy,P[mq.id].x,P[mq.id].cy,hasWin(ma.id));ln(P[mb.id].x+BW,P[mb.id].cy,P[mq.id].x,P[mq.id].cy,hasWin(mb.id));});
-  [0,1].forEach(qi=>{if(!qf[qi]||!sf[0])return;ln(P[qf[qi].id].x+BW,P[qf[qi].id].cy,P[sf[0].id].x,P[sf[0].id].cy,hasWin(qf[qi].id));});
-  if(sf[0]&&fin)ln(P[sf[0].id].x+BW,P[sf[0].id].cy,P[fin.id].x,P[fin.id].cy,hasWin(sf[0].id));
-  [[8,9],[10,11],[12,13],[14,15]].forEach(([a,b],qi)=>{const ma=r16[a],mb=r16[b],mo=r8[qi+4];if(!ma||!mb||!mo)return;ln(P[mo.id].x+BW,P[mo.id].cy,P[ma.id].x,P[ma.id].cy,hasWin(ma.id));ln(P[mo.id].x+BW,P[mo.id].cy,P[mb.id].x,P[mb.id].cy,hasWin(mb.id));});
-  [[4,5],[6,7]].forEach(([a,b],qi)=>{const ma=r8[a],mb=r8[b],mq=qf[qi+2];if(!ma||!mb||!mq)return;ln(P[mq.id].x+BW,P[mq.id].cy,P[ma.id].x,P[ma.id].cy,hasWin(ma.id));ln(P[mq.id].x+BW,P[mq.id].cy,P[mb.id].x,P[mb.id].cy,hasWin(mb.id));});
-  [2,3].forEach(qi=>{if(!qf[qi]||!sf[1])return;ln(P[sf[1].id].x+BW,P[sf[1].id].cy,P[qf[qi].id].x,P[qf[qi].id].cy,hasWin(qf[qi].id));});
-  if(sf[1]&&fin)ln(P[fin.id].x+BW,P[fin.id].cy,P[sf[1].id].x,P[sf[1].id].cy,hasWin(sf[1].id));
+  // Dibuja líneas según el mapeo REAL winOf de cada partido (no por índice fijo)
+  // Para cada partido de una ronda, conecta sus dos orígenes (winOf.a, winOf.b) con él
+  function drawFeed(round){
+    round.forEach(mo=>{
+      if(!mo.winOf || !P[mo.id]) return;
+      [mo.winOf.a, mo.winOf.b].forEach(srcId=>{
+        const ps = P[srcId];
+        if(!ps) return;
+        const px = ps.x, pcy = ps.cy;          // posición del partido origen
+        const tx = P[mo.id].x, tcy = P[mo.id].cy; // posición del destino
+        // Determinar dirección: si origen está a la izquierda del destino
+        const leftToRight = px < tx;
+        const x1 = leftToRight ? px + BW : px;
+        const x2 = leftToRight ? tx : tx + BW;
+        ln(x1, pcy, x2, tcy, hasWin(srcId));
+      });
+    });
+  }
+  drawFeed(r8);   // 16avos → octavos
+  drawFeed(qf);   // octavos → cuartos
+  drawFeed(sf);   // cuartos → semifinales
+  if(fin) drawFeed([fin]); // semifinales → final
   function mCard(m){
     const r=S[gkko(m.id)];
     const tH=teamFor(m,'H'),tA=teamFor(m,'A');
@@ -1494,7 +1481,7 @@ function renderBracket(){
     box.innerHTML=mCard(m);wrap.appendChild(box);
   });
   const finP=P[fin.id];
-  const champY=finP?finP.y+BH+16:CANVAS_H-80;
+  const champY=finP?finP.y+BH+40:CANVAS_H-80;
   const champX=colX(4);
   const finR=S[gkko(fin.id)];
   const champ=(finR&&finR.played)?resolveWinner(fin.id):KLEM[fin.id];
