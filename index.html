@@ -2775,6 +2775,71 @@ function findMatch(home, away) {
   return -1;
 }
 
+
+
+// Normalizador de nombres reutilizable (para grupos y eliminatorias)
+function normTeam(n){
+  const ALIAS = {
+    'mexico':'mexico','south africa':'sudafrica','korea republic':'corea del sur','south korea':'corea del sur',
+    'czech republic':'rep. checa','czechia':'rep. checa','switzerland':'suiza','canada':'canada',
+    'bosnia and herzegovina':'bosnia','bosnia & herzegovina':'bosnia','bosnia herzegovina':'bosnia','qatar':'qatar',
+    'brazil':'brasil','morocco':'marruecos','scotland':'escocia','haiti':'haiti','australia':'australia',
+    'turkey':'turquia','turkiye':'turquia','united states':'ee.uu.','usa':'ee.uu.','paraguay':'paraguay',
+    'germany':'alemania','ecuador':'ecuador',"cote d'ivoire":'c.marfil','ivory coast':'c.marfil','costa de marfil':'c.marfil','curacao':'curazao',
+    'netherlands':'p.bajos','japan':'japon','sweden':'suecia','tunisia':'tunez','belgium':'belgica','egypt':'egipto',
+    'iran':'iran','new zealand':'n.zelanda','spain':'espana','uruguay':'uruguay','saudi arabia':'arabia s.','cape verde':'cabo verde',
+    'france':'francia','norway':'noruega','senegal':'senegal','iraq':'irak','argentina':'argentina','austria':'austria',
+    'algeria':'argelia','jordan':'jordania','colombia':'colombia','portugal':'portugal','dr congo':'rd congo','congo dr':'rd congo','uzbekistan':'uzbekistan',
+    'england':'inglaterra','croatia':'croacia','ghana':'ghana','panama':'panama',
+  };
+  let s = n.replace(/[^\w\sáàâäéèêëíìîïóòôöúùûüñç.']/gi,'').trim().toLowerCase();
+  s = s.replace(/[áàâä]/g,'a').replace(/[éèêë]/g,'e').replace(/[íìîï]/g,'i').replace(/[óòôö]/g,'o').replace(/[úùûü]/g,'u').replace(/ñ/g,'n').replace(/ç/g,'c');
+  const clean = s.replace(/\s+/g,' ').trim();
+  return ALIAS[clean] || clean;
+}
+
+// Busca un partido KO por nombres de equipo (normaliza igual que findMatch)
+function findKOMatch(home, away){
+  const normFn = normTeam;
+  const hn = normFn(home), an = normFn(away);
+  for(const rnd of KO_ROUNDS){
+    for(const m of rnd.matches){
+      const th = teamFor(m,'H'), ta = teamFor(m,'A');
+      if(!th || !ta) continue;
+      const thn = normFn(th), tan = normFn(ta);
+      if((thn===hn && tan===an) || (thn===an && tan===hn)) return m.id;
+    }
+  }
+  return null;
+}
+
+// Propaga los ganadores confirmados a la siguiente fase (fija el equipo)
+function propagateWinners(){
+  // Recorre rondas en orden y fija teamH/teamA del partido destino con el ganador real
+  KO_ROUNDS.forEach(rnd=>{
+    rnd.matches.forEach(m=>{
+      const st = S[gkko(m.id)];
+      if(!st || !st.played) return;
+      const winner = resolveWinner(m.id);
+      const loser  = resolveLoser(m.id);
+      if(!winner) return;
+      // Buscar partidos que dependen de este (winOf / loseOf) y fijar el equipo
+      KO_ROUNDS.forEach(rnd2=>{
+        rnd2.matches.forEach(m2=>{
+          if(m2.winOf){
+            if(m2.winOf.a===m.id) m2.teamH = winner;
+            if(m2.winOf.b===m.id) m2.teamA = winner;
+          }
+          if(m2.loseOf && loser){
+            if(m2.loseOf.a===m.id) m2.teamH = loser;
+            if(m2.loseOf.b===m.id) m2.teamA = loser;
+          }
+        });
+      });
+    });
+  });
+}
+
 let syncTimer = null;
 
 async function syncLive() {
@@ -2855,7 +2920,30 @@ async function syncLive() {
       // Find GM index for all statuses
       let idx = findMatch(m.home, m.away);
       if (idx === -1 && m.homeRaw) idx = findMatch(m.homeRaw, m.awayRaw || m.away);
-      if (idx === -1) { skipped++; return; }
+      if (idx === -1) {
+        // No es partido de grupos → intentar como partido de eliminatorias (KO)
+        let koId = findKOMatch(m.home, m.away);
+        if (koId === null && m.homeRaw) koId = findKOMatch(m.homeRaw, m.awayRaw || m.away);
+        if (koId !== null && (isFT || isLive)) {
+          const kk = gkko(koId);
+          if (!S[kk]) S[kk] = { h:0, a:0, played:false };
+          // Fijar los equipos reales del cruce
+          const koM = KO_ROUNDS.flatMap(r=>r.matches).find(x=>x.id===koId);
+          S[kk].teamH = teamFor(koM,'H');
+          S[kk].teamA = teamFor(koM,'A');
+          if (isFT) {
+            S[kk].h = m.goalsH ?? 0; S[kk].a = m.goalsA ?? 0;
+            S[kk].played = true; S[kk].live = false;
+            if (m.pen) S[kk].pen = m.pen;
+            updated++;
+          } else if (isLive) {
+            S[kk].h = m.goalsH ?? 0; S[kk].a = m.goalsA ?? 0;
+            S[kk].played = false; S[kk].live = true; S[kk].elapsed = m.elapsed || null;
+            updated++;
+          }
+        } else { skipped++; }
+        return;
+      }
 
       const matchDate = m.date ? new Date(m.date) : null;
       const dateOk    = !matchDate || matchDate <= today;
@@ -2889,6 +2977,7 @@ async function syncLive() {
       }
     });
 
+    propagateWinners(); // fijar ganadores confirmados en la siguiente fase
     save();
     // Re-renderizar SOLO el panel activo (preserva la vista del usuario)
     const active = document.querySelector('.panel.on');
